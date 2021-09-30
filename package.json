@@ -1,0 +1,49 @@
+{
+  "name": "view-card-admin",
+  "version": "0.1.0",
+  "private": true,
+  "author": "chenqunxing",
+  "license": "ISC",
+  "scripts": {
+    "dev": "vite",
+    "pro": "vite --mode pro --host",
+    "build": "vuedx-typecheck . && vite build  --mode pro",
+    "serve": "vite preview --host"
+  },
+  "dependencies": {
+    "@ant-design/icons-vue": "^6.0.1",
+    "ant-design-vue": "^2.1.2",
+    "axios": "^0.21.1",
+    "lodash-es": "^4.17.21",
+    "moment": "^2.29.1",
+    "nprogress": "^0.2.0",
+    "vue": "^3.0.5",
+    "vue-router": "^4.0.4",
+    "vuex": "^4.0.0"
+  },
+  "devDependencies": {
+    "@types/node": "^15.6.1",
+    "@types/lodash-es": "^4.17.4",
+    "@types/nprogress": "^0.2.0",
+    "@vitejs/plugin-vue": "^1.2.3",
+    "@vitejs/plugin-vue-jsx": "^1.1.2",
+    "@vue/compiler-sfc": "^3.0.5",
+    "@vuedx/typecheck": "^0.6.3",
+    "@vuedx/typescript-plugin-vue": "^0.6.3",
+    "babel-eslint": "^10.1.0",
+    "eslint": "^6.7.2",
+    "eslint-plugin-prettier": "^3.1.3",
+    "eslint-plugin-vue": "^7.0.0-0",
+    "less": "^4.1.1",
+    "prettier": "^1.19.1",
+    "typescript": "^4.1.3",
+    "vite": "^2.3.5",
+    "vite-plugin-style-import": "^0.7.5"
+  },
+  "description": "启动项目",
+  "main": "index.js",
+  "repository": {
+    "type": "git",
+    "url": "http://chenqunxing@10.181.81.107:9999/r/data-cloud/view-card-admin.git"
+  }
+}

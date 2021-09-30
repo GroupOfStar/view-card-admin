@@ -1,0 +1,23 @@
+{
+	"root": true,
+	"env": {
+		"node": true
+	},
+	"extends": [
+		"plugin:vue/vue3-essential",
+		"eslint:recommended",
+		"@vue/prettier"
+	],
+	"parserOptions": {
+		"ecmaVersion": 2020
+	},
+	"rules": {
+		"no-console": "off",
+		"no-debugger": "off",
+		"vue/no-confusing-v-for-v-if": "warn",
+		"vue/no-multiple-template-root": "off",
+		"vue/no-v-model-argument": "off",
+		"space-before-function-paren": 0,
+		"comma-dangle": "off"
+	}
+}
