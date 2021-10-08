@@ -51,7 +51,15 @@ export default defineConfig({
       less: {
         javascriptEnabled: true,
         // additionalData: '@import "./src/App.less";', // 添加公共样式文件
-        modifyVars: { },
+        modifyVars: {
+          'btn-border-radius-base': '5px',
+          'btn-default-border': '#44CCB5',
+          'btn-default-color': '#44CCB5',
+          'menu-dark-bg': '#44CCB5',
+          'menu-dark-color': '#fff',
+          'menu-dark-item-active-bg': '#1a8173',
+          'primary-color': '#44CCB5',
+        },
       },
     },
   },

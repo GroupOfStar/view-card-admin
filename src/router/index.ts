@@ -1,4 +1,4 @@
-import { createRouter, createWebHashHistory, RouteRecordRaw } from 'vue-router'
+import { createRouter, createWebHistory, RouteRecordRaw } from 'vue-router'
 import nProgress from 'nprogress'
 
 const routes: Array<RouteRecordRaw> = [
@@ -8,29 +8,28 @@ const routes: Array<RouteRecordRaw> = [
   },
   {
     path: '/login',
-    name: 'mLogin', // 登录页
+    name: 'vcLogin', // 登录页
     component: () => import('../views/Login'),
   },
-	{
-		path: '/main',
-		component: () => import('../views/Main'),
-		children: [
-			{
-				path: '',
-				redirect: '/main/datasource'
-			},
-			{
-				path: '/main/datasource/:pathMatch(.*)*',
-				name: 'mDatasource',
-				component: () => import('../views/Datasource'),
-			},
-		]
-	},
-
+  {
+    path: '/main',
+    component: () => import('../views/Main'),
+    children: [
+      {
+        path: '',
+        redirect: '/main/datasource',
+      },
+      {
+        path: '/main/datasource/:pathMatch(.*)*',
+        name: 'mDatasource',
+        component: () => import('../views/Datasource'),
+      },
+    ],
+  },
 ]
 
 const router = createRouter({
-  history: createWebHashHistory(),
+  history: createWebHistory(),
   routes,
 })
 

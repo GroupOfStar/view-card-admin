@@ -2,9 +2,10 @@ import { defineComponent, reactive } from 'vue'
 import { useRouter } from 'vue-router'
 import { Button, Form, Input, message } from 'ant-design-vue'
 import { UserOutlined, LockOutlined } from '@ant-design/icons-vue'
-import styles from './index.module.less'
-import Logo from '@/assets/logo.png'
+import { useStore } from '@/store'
 import request from '@/utils/request'
+import Logo from '@/assets/logo.png'
+import styles from './index.module.less'
 
 /**
  * 登录反参
@@ -25,6 +26,8 @@ export default defineComponent({
   setup() {
     const router = useRouter()
 
+    const store = useStore()
+
     const state = reactive({
       loading: false,
       loginForm: {
@@ -33,6 +36,7 @@ export default defineComponent({
       },
     })
 
+    // 登录
     const handleFinish = () => {
       const url = '/framework-wechart/manager/doLogin'
       state.loading = true
@@ -47,9 +51,10 @@ export default defineComponent({
             name = '',
           } = res.data
           if (status === 0) {
-            localStorage.setItem('token', Authorization)
-            localStorage.setItem('loginId', loginId)
-            // commit(types.CHANGE_USER_INFO, { loginId, name })
+            const payload = { loginId, name }
+            store.commit('CHANGE_USER_INFO', payload)
+            localStorage.setItem('ACCESS_TOKEN', Authorization)
+            localStorage.setItem('userInfo', JSON.stringify(payload))
             router.push({ name: 'UserManage' }).then(() => {
               state.loading = false
             })
@@ -64,76 +69,65 @@ export default defineComponent({
     }
 
     return () => (
-      <div
-        id={styles.userLayout}
-        class={[styles.userLayoutWrapper, styles.mobile]}
-      >
-        <div class={styles.container}>
-          <div class={styles.userLayoutLang}>
-            {/* <select-lang class={styles.selectlangTrigger} /> */}
+      <div class={styles.page_warpper}>
+        <div class={styles.warpper}>
+          <div class={styles.header}>
+            <img class={styles.logo_img} src={Logo} />
+            <span class={styles.title_name}>i云名片</span>
           </div>
-          <div class={styles.userLayoutContent}>
-            <div class={styles.top}>
-              <div class={styles.header}>
-                <img src={Logo} class={styles.logo} />
-                <span class={styles.title}>Data Management</span>
-              </div>
-              <div class={styles.desc}>
-                Ant Design is the most influential web design specification in
-                Xihu district
-              </div>
-            </div>
-            <div class={styles.main}>
-              <Form
-                layout="horizontal"
-                model={state.loginForm}
-                onFinish={handleFinish}
+
+          <Form
+            class={styles.login_form}
+            layout="horizontal"
+            model={state.loginForm}
+            onFinish={handleFinish}
+            wrapperCol={{ span: 24 }}
+          >
+            <Form.Item
+              name="loginId"
+              rules={[{ required: true, message: '用户名不能为空' }]}
+            >
+              <Input
+                prefix={<UserOutlined />}
+                v-model={[state.loginForm.loginId, 'value']}
+                size="large"
+                placeholder="用户名"
+              />
+            </Form.Item>
+            <Form.Item
+              name="password"
+              rules={[{ required: true, message: '密码不能为空' }]}
+            >
+              <Input.Password
+                prefix={<LockOutlined />}
+                v-model={[state.loginForm.password, 'value']}
+                type="password"
+                size="large"
+                placeholder="密码"
+              />
+            </Form.Item>
+            <Form.Item>
+              <Button
+                size="large"
+                block
+                type="primary"
+                htmlType="submit"
+                loading={state.loading}
               >
-                <Form.Item
-                  name="loginId"
-                  rules={[{ required: true, message: '用户名不能为空' }]}
-                >
-                  <Input
-                    prefix={<UserOutlined />}
-                    v-model={[state.loginForm.loginId, 'value']}
-                    size="large"
-                    placeholder="Username"
-                  />
-                </Form.Item>
-                <Form.Item
-                  name="password"
-                  rules={[{ required: true, message: '密码不能为空' }]}
-                >
-                  <Input.Password
-                    prefix={<LockOutlined />}
-                    v-model={[state.loginForm.password, 'value']}
-                    type="password"
-                    size="large"
-                    placeholder="Password"
-                  />
-                </Form.Item>
-                <Form.Item>
-                  <Button
-                    size="large"
-                    type="primary"
-                    html-type="submit"
-                    loading={state.loading}
-                  >
-                    登录
-                  </Button>
-                </Form.Item>
-              </Form>
+                登录
+              </Button>
+            </Form.Item>
+          </Form>
+
+          <div class={styles.footer}>
+            <div class={styles.links}>
+              <a>帮助</a>
+              <a>隐私</a>
+              <a>条款</a>
             </div>
-            <div class={styles.footer}>
-              <div class={styles.links}>
-                <a href="_self">帮助</a>
-                <a href="_self">隐私</a>
-                <a href="_self">条款</a>
-              </div>
-              <div class={styles.copyright}>
-                Copyright &copy; 2001-2021 版权所有
-                软通动力信息技术（集团）股份有限公司
-              </div>
+            <div class={styles.copyright}>
+              Copyright &copy; 2001-2021 版权所有
+              软通动力信息技术（集团）股份有限公司
             </div>
           </div>
         </div>

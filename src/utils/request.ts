@@ -51,7 +51,7 @@ request.interceptors.response.use(response => {
       key: status,
     })
   }
-  return response.data
+  return response
 }, errorHandler)
 
 export default request
