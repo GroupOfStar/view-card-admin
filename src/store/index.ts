@@ -30,7 +30,7 @@ export default createStore<RootIState>({
   },
 })
 
-interface AllStateType {
+interface AllStateType extends RootIState {
   ModelingTree: IModelingTreeState
 }
 

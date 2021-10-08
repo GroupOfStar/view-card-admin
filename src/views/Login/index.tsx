@@ -55,7 +55,7 @@ export default defineComponent({
             store.commit('CHANGE_USER_INFO', payload)
             localStorage.setItem('ACCESS_TOKEN', Authorization)
             localStorage.setItem('userInfo', JSON.stringify(payload))
-            router.push({ name: 'UserManage' }).then(() => {
+            router.push('/main/').then(() => {
               state.loading = false
             })
           } else {

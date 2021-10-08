@@ -58,6 +58,7 @@ export default defineConfig({
           'menu-dark-bg': '#44CCB5',
           'menu-dark-color': '#fff',
           'menu-dark-item-active-bg': '#1a8173',
+          'layout-sider-background': '#44CCB5',
           'primary-color': '#44CCB5',
         },
       },

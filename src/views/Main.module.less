@@ -1,4 +1,63 @@
-.lc_main {
-  background: #f0f2f5;
+.layout_warpper {
   min-height: 100vh;
+
+  .logo_warpper {
+    display: flex;
+    align-items: center;
+    padding: 16px 24px;
+    cursor: pointer;
+    .logo_img {
+      height: 32px;
+    }
+    .logo_title {
+      height: 32px;
+      margin-left: 12px;
+      color: #fff;
+      font-weight: 600;
+      font-size: 18px;
+      line-height: 32px;
+      overflow: hidden;
+    }
+  }
+
+  .header_warpper {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: #fff;
+    padding: 0px 20px;
+    .left_header {
+      font-size: 18px;
+      cursor: pointer;
+      &:hover {
+        color: #44ccb5;
+      }
+    }
+
+    // 右侧操作栏
+    .right_header {
+      height: 100%;
+      line-height: 64px;
+      overflow: hidden;
+      &:hover {
+        background-color: rgba(0, 0, 0, 0.025);
+      }
+      .tenant_role_warpper {
+        display: inline-block;
+        padding: 0px 12px;
+      }
+      .account_avatar {
+        display: inline-block;
+        height: 100%;
+        padding: 0 12px;
+        cursor: pointer;
+        transition: all 0.3s;
+        .right_header_avatar {
+          margin: 20px 0;
+          margin-right: 8px;
+          vertical-align: top;
+        }
+      }
+    }
+  }
 }
