@@ -44,7 +44,7 @@ request.interceptors.request.use(config => {
 // response interceptor
 request.interceptors.response.use(response => {
   const { status, statusText } = response.data
-  if (status === 2001) {
+  if (status === 999) {
     router.push('/login')
     message.warning({
       content: statusText,

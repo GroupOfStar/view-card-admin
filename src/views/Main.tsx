@@ -223,8 +223,8 @@ export default defineComponent(function Main() {
           </Modal>
         </Layout.Header>
 
-        <Layout.Content>
-          <RouterView></RouterView>
+        <Layout.Content class={styles.content_warpper}>
+          <RouterView class={styles.content}></RouterView>
         </Layout.Content>
       </Layout>
     </Layout>

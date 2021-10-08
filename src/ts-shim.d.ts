@@ -9,31 +9,24 @@ declare module '*.webp'
 declare module '*.gif'
 declare module '*.svg'
 
-declare interface Window {
-	qiankunStarted: any
+interface IPageRequestParams {
+  page: number
+  limit: number
 }
 
 interface IPagePropType {
-  current?: number
+  currPage?: number
   pageSize?: number
-  total?: number
+  totalCount?: number
 }
 
-interface PageDataDefine<T> {
-  content: T
-  pages: IPagePropType
+interface IResponseDefine<T = undefined> {
+  data: T
+  status: number
+  statusText: string
 }
 
-interface IDataSourceResponse<T> {
-  code: number
-  msg: string
-  page: {
-    list: T
-    currPage: number
-    pageSize: number
-    totalCount: number
-  }
-}
+type PageDataDefine<T> = Required<IPagePropType> & { list: T[] }
 
 /**
  * 下拉项、lookUp、状态的枚举接口
@@ -48,7 +41,8 @@ interface IStatusEnum<T = string> {
 }
 
 /** 表格列配置 */
-type ColumnProps = import('ant-design-vue/lib/table/interface').ColumnProps
+type ColumnProps = import('ant-design-vue/lib/table/interface').ColumnProps &
+  { children?: ColumnProps }[]
 
 /** 表格的key类型 */
 type ColumnKey = ColumnProps['key']
