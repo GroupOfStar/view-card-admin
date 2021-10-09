@@ -24,7 +24,7 @@ import {
 import Logo from '@/assets/logo.png'
 import { useStore } from '@/store'
 import request from '@/utils/request'
-import styles from './Main.module.less'
+import styles from './index.module.less'
 
 interface IState {
   /** 左侧菜单收缩展开状态 */

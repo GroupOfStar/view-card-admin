@@ -13,7 +13,7 @@ const routes: Array<RouteRecordRaw> = [
   },
   {
     path: '/main',
-    component: () => import('../views/Main'),
+    component: () => import('../components/Main'),
     children: [
       {
         path: '',
