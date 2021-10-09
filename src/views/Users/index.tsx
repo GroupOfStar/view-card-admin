@@ -30,20 +30,30 @@ import request, { baseURL } from '@/utils/request'
 
 /** 表管理列 */
 const Columns: ColumnProps = [
-  { title: '姓名', dataIndex: 'fullName', width: 100 },
-  { title: '手机号', dataIndex: 'phoneNumber', width: 125 },
-  { title: '租户', dataIndex: 'tenantName' },
-  { title: '邮箱', dataIndex: 'email' },
-  { title: '职位', dataIndex: 'position' },
   {
-    title: '最后更新时间',
+    title: '姓名',
+    dataIndex: 'fullName',
+    width: 100,
+    slots: { customRender: 'fullName' },
+  },
+  { title: '手机号', dataIndex: 'phoneNumber', width: 110 },
+  { title: '租户', dataIndex: 'tenantName', ellipsis: true },
+  { title: '邮箱', dataIndex: 'email', ellipsis: true },
+  { title: '职位', dataIndex: 'position', ellipsis: true },
+  {
+    title: '修改时间',
     dataIndex: 'modifyTime',
-    width: 165,
-    slots: { customRender: 'lastUpdateDate' },
+    width: 130,
+    slots: { customRender: 'modifyTime' },
+  },
+  {
+    title: '创建时间',
+    dataIndex: 'creationTime',
+    width: 130,
+    align: 'center',
+    slots: { customRender: 'creationTime' },
     sorter(record1: IDataItem, record2: IDataItem) {
-      if (record1.modifyTime && record2.modifyTime)
-        return moment(record1.modifyTime).isBefore(record2.modifyTime)
-      else if (record1.creationTime && record2.creationTime)
+      if (record1.creationTime && record2.creationTime)
         return moment(record1.creationTime).isBefore(record2.creationTime)
       else return true
     },
@@ -72,8 +82,16 @@ export default defineComponent(function Users() {
     },
     modalVisible: false,
     modalForm: {
+      uniqueId: undefined,
       fullName: '',
       phoneNumber: '',
+      email: undefined,
+      company: undefined,
+      dept: undefined,
+      position: undefined,
+      website: undefined,
+      address: undefined,
+      companyTemplateId: undefined,
     },
     modalType: 'insertUser',
     companyTemplateList: [],
@@ -173,6 +191,24 @@ export default defineComponent(function Users() {
     }
   }
 
+  // 查看
+  const handleView = (record: IDataItem) => {
+    getCompanyTemplateList()
+    state.modalForm.uniqueId = record.uniqueId
+    state.modalForm.fullName = record.fullName
+    state.modalForm.phoneNumber = record.phoneNumber
+    state.modalForm.email = record.email
+    state.modalForm.company = record.company
+    state.modalForm.dept = record.dept
+    state.modalForm.position = record.position
+    state.modalForm.website = record.website
+    state.modalForm.address = record.address
+    state.modalForm.companyTemplateId = record.companyTemplateId
+
+    state.modalType = 'viewUser'
+    state.modalVisible = true
+  }
+
   // 新增
   const handleAdd = () => {
     getCompanyTemplateList()
@@ -265,6 +301,7 @@ export default defineComponent(function Users() {
                 v-model={[state.searchForm.fullName, 'value', ['trim']]}
                 allowClear
                 placeholder="请输入"
+                onPressEnter={getUserList}
               />
             </Form.Item>
           </Col>
@@ -275,6 +312,7 @@ export default defineComponent(function Users() {
                 v-model={[state.searchForm.phoneNumber, 'value', ['trim']]}
                 allowClear
                 placeholder="请输入"
+                onPressEnter={getUserList}
               />
             </Form.Item>
           </Col>
@@ -338,6 +376,7 @@ export default defineComponent(function Users() {
 
       <Table
         bordered
+        size="middle"
         rowKey="uniqueId"
         loading={state.loading}
         columns={Columns}
@@ -362,15 +401,16 @@ export default defineComponent(function Users() {
         style={{ marginTop: '16px' }}
       >
         {{
-          // 最后更新时间
-          lastUpdateDate({ record }: { record: IDataItem }) {
-            const DATE = record.modifyTime || record.creationTime
-            if (DATE) {
-              return moment(DATE).format('YYYY-MM-DD HH:mm')
-            } else {
-              return ''
-            }
-          },
+          // 姓名
+          fullName: ({ record }: { record: IDataItem }) => (
+            <a onClick={() => handleView(record)}>{record.fullName}</a>
+          ),
+          // 修改时间
+          modifyTime: ({ text }: { text: IDataItem['modifyTime'] }) =>
+            text && moment(text).format('YYYY-MM-DD HH:mm'),
+          // 创建时间
+          creationTime: ({ text }: { text: IDataItem['creationTime'] }) =>
+            text && moment(text).format('YYYY-MM-DD HH:mm'),
           // 操作
           operation: ({ record }: { record: IDataItem }) => (
             <>
@@ -393,7 +433,18 @@ export default defineComponent(function Users() {
         v-model={[state.modalVisible, 'visible']}
         title={`${state.modalType === 'insertUser' ? '新增' : '修改'}员工信息`}
         onCancel={hanldeCancel}
-        onOk={hanldeOK}
+        footer={
+          state.modalType === 'viewUser' ? (
+            <Button onClick={hanldeCancel}>关 闭</Button>
+          ) : (
+            <>
+              <Button onClick={hanldeCancel}>取 消</Button>
+              <Button type="primary" onClick={hanldeOK}>
+                确 定
+              </Button>
+            </>
+          )
+        }
         width={900}
       >
         <Form labelCol={{ span: 6 }} wrapperCol={{ span: 18 }}>
@@ -402,6 +453,7 @@ export default defineComponent(function Users() {
               <Form.Item label="员工姓名" {...validateInfos.fullName}>
                 <Input
                   v-model={[state.modalForm.fullName, 'value', ['trim']]}
+                  disabled={state.modalType === 'viewUser'}
                   placeholder="请输入..."
                 />
               </Form.Item>
@@ -410,6 +462,7 @@ export default defineComponent(function Users() {
               <Form.Item label="手机号" {...validateInfos.phoneNumber}>
                 <Input
                   v-model={[state.modalForm.phoneNumber, 'value', ['trim']]}
+                  disabled={state.modalType === 'viewUser'}
                   placeholder="请输入..."
                 />
               </Form.Item>
@@ -421,6 +474,7 @@ export default defineComponent(function Users() {
               <Form.Item label="邮箱" {...validateInfos.email}>
                 <Input
                   v-model={[state.modalForm.email, 'value', ['trim']]}
+                  disabled={state.modalType === 'viewUser'}
                   placeholder="请输入..."
                 />
               </Form.Item>
@@ -429,6 +483,7 @@ export default defineComponent(function Users() {
               <Form.Item label="公司" {...validateInfos.company}>
                 <Input
                   v-model={[state.modalForm.company, 'value', ['trim']]}
+                  disabled={state.modalType === 'viewUser'}
                   placeholder="请输入..."
                 />
               </Form.Item>
@@ -440,6 +495,7 @@ export default defineComponent(function Users() {
               <Form.Item label="部门" {...validateInfos.dept}>
                 <Input
                   v-model={[state.modalForm.dept, 'value', ['trim']]}
+                  disabled={state.modalType === 'viewUser'}
                   placeholder="请输入..."
                 />
               </Form.Item>
@@ -448,6 +504,7 @@ export default defineComponent(function Users() {
               <Form.Item label="职位" {...validateInfos.position}>
                 <Input
                   v-model={[state.modalForm.position, 'value', ['trim']]}
+                  disabled={state.modalType === 'viewUser'}
                   placeholder="请输入..."
                 />
               </Form.Item>
@@ -459,6 +516,7 @@ export default defineComponent(function Users() {
               <Form.Item label="企业官网" {...validateInfos.website}>
                 <Input
                   v-model={[state.modalForm.website, 'value', ['trim']]}
+                  disabled={state.modalType === 'viewUser'}
                   placeholder="请输入..."
                 />
               </Form.Item>
@@ -467,6 +525,7 @@ export default defineComponent(function Users() {
               <Form.Item label="地址" {...validateInfos.address}>
                 <Input
                   v-model={[state.modalForm.address, 'value', ['trim']]}
+                  disabled={state.modalType === 'viewUser'}
                   placeholder="请输入..."
                 />
               </Form.Item>
@@ -478,6 +537,7 @@ export default defineComponent(function Users() {
               <Form.Item label="名片模板" {...validateInfos.companyTemplateId}>
                 <Select
                   v-model={[state.modalForm.companyTemplateId, 'value']}
+                  disabled={state.modalType === 'viewUser'}
                   placeholder="请选择..."
                   defaultActiveFirstOption={true}
                 >

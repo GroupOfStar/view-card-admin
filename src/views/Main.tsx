@@ -1,5 +1,5 @@
-import { defineComponent, ref, reactive } from 'vue'
-import { RouterView, useRoute, useRouter } from 'vue-router'
+import { defineComponent, reactive, watch } from 'vue'
+import { RouterView, useRouter, useRoute } from 'vue-router'
 import {
   Menu,
   Avatar,
@@ -26,28 +26,42 @@ import { useStore } from '@/store'
 import request from '@/utils/request'
 import styles from './Main.module.less'
 
+interface IState {
+  /** 左侧菜单收缩展开状态 */
+  collapsed: boolean
+  /** 当前选中的菜单 */
+  currentMenu: string[]
+  /** 修改密码弹窗visible */
+  pwVisible: boolean
+  /** 修改密码loading */
+  pwLoading: boolean
+  /** 修改密码弹窗form */
+  pwForm: {
+    /** 旧密码 */
+    oldPassword: string
+    /** 新密码 */
+    newPassword: string
+    /** 确认密码 */
+    confirmPassword: string
+  }
+}
+
 export default defineComponent(function Main() {
   const store = useStore()
   const router = useRouter()
   const route = useRoute()
-  const menuCollapsed = ref(true)
 
-  const state = reactive({
+  const state = reactive<IState>({
     collapsed: false,
+    currentMenu: [],
     pwVisible: false,
     pwLoading: false,
-    formState: {
+    pwForm: {
       oldPassword: '',
       newPassword: '',
       confirmPassword: '',
     },
   })
-
-  // 退出登录
-  const logout = () => {
-    localStorage.clear()
-    router.push('/')
-  }
 
   /** 效验 */
   const rulesRef = reactive({
@@ -57,7 +71,7 @@ export default defineComponent(function Main() {
       { required: true, message: '不能为空！', trigger: 'blur' },
       {
         validator: (_: object, value: string) => {
-          if (value === state.formState.newPassword) {
+          if (value === state.pwForm.newPassword) {
             return Promise.resolve()
           } else {
             return Promise.reject(new Error('两次输入的密码不一致'))
@@ -69,7 +83,7 @@ export default defineComponent(function Main() {
   })
 
   const { resetFields, validate, validateInfos } = useForm(
-    state.formState,
+    state.pwForm,
     rulesRef
   )
 
@@ -103,25 +117,47 @@ export default defineComponent(function Main() {
     })
   }
 
+  // 切换菜单
+  const onMenuChange = (item: { key: string }) => {
+    router.push(`/main/${item.key}`)
+  }
+
+  // 退出登录
+  const logout = () => {
+    localStorage.clear()
+    router.push('/')
+  }
+
+  watch(
+    () => route.fullPath,
+    newValue => {
+      const currentRouteExp = (newValue || '').match(/\/main\/(\S[^\?]*)/)
+      const currentPage = currentRouteExp ? currentRouteExp[1] : 'users'
+      state.currentMenu = [currentPage]
+    },
+    {
+      immediate: true,
+    }
+  )
+
   return () => (
     <Layout class={styles.layout_warpper}>
       <Layout.Sider
-        theme="dark"
         v-model={[state.collapsed, 'collapsed']}
-        trigger={null}
-        collapsible
+        theme="dark"
+        breakpoint="xl"
       >
         <div class={styles.logo_warpper} onClick={() => router.push('/main/')}>
           <img class={styles.logo_img} src={Logo} />
           <div class={styles.logo_title}>后台管理</div>
         </div>
         <Menu
+          v-model={[state.currentMenu, 'selectedKeys']}
           theme="dark"
           mode="inline"
-          onClick={({ key }: { key: string }) => router.push({ name: key })}
-          inlineCollapsed={menuCollapsed.value}
+          onClick={onMenuChange}
         >
-          <Menu.Item key="UserManage">
+          <Menu.Item key="users">
             <UserOutlined />
             <span>员工信息</span>
           </Menu.Item>
@@ -198,7 +234,7 @@ export default defineComponent(function Main() {
               <Form.Item label="旧密码" {...validateInfos.oldPassword}>
                 <Input.Password
                   type="password"
-                  v-model={[state.formState.oldPassword, 'value']}
+                  v-model={[state.pwForm.oldPassword, 'value']}
                   placeholder="请输入..."
                   allowClear
                 />
@@ -206,7 +242,7 @@ export default defineComponent(function Main() {
 
               <Form.Item label="新密码" {...validateInfos.newPassword}>
                 <Input.Password
-                  v-model={[state.formState.newPassword, 'value']}
+                  v-model={[state.pwForm.newPassword, 'value']}
                   placeholder="请输入..."
                   allowClear
                 />
@@ -214,7 +250,7 @@ export default defineComponent(function Main() {
 
               <Form.Item label="确认密码" {...validateInfos.confirmPassword}>
                 <Input.Password
-                  v-model={[state.formState.confirmPassword, 'value']}
+                  v-model={[state.pwForm.confirmPassword, 'value']}
                   placeholder="请输入..."
                   allowClear
                 />

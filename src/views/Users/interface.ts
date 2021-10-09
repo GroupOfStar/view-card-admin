@@ -1,4 +1,4 @@
-// 公司模板item
+/** 公司模板item */
 export interface TemplateType {
   id: number
   /** 模板名称 */
@@ -11,26 +11,41 @@ export interface TemplateType {
   isDefault?: '是' | '否'
 }
 
-export interface baseUserType {
-  /**姓名 */
+/** 表格行数据 */
+export interface IDataItem {
+  /** 用户ID */
+  id?: string
+  /** 用户id(标识当前应用的用户id) */
+  uniqueId?: string
+  /** 姓名 */
   fullName: string
-  /**手机号 */
+  /** 手机号 */
   phoneNumber: string
-  /**邮箱 */
+  /** 租户id */
+  tenantId?: string
+  /** 租户 */
+  tenantName?: string
+  /** 邮箱 */
   email?: string
-  /**公司 */
+  /** 公司 */
   company?: string
-  /**部门 */
+  /** 部门 */
   dept?: string
-  /**职位 */
+  /** 职位 */
   position?: string
-  /**企业官网 */
+  /** 企业官网 */
   website?: string
-  /**地址 */
+  /** 地址 */
   address?: string
+  /** 名片模板 id */
+  companyTemplateId?: number
+  /** 创建时间 */
+  creationTime?: string
+  /** 修改时间 */
+  modifyTime?: string
 }
 
-export interface IDataItem extends baseUserType {
+export interface baseUserType {
   /** 用户ID */
   id?: string
   /** 用户id(标识当前应用的用户id) */
@@ -57,18 +72,23 @@ export interface IDataItem extends baseUserType {
   modifyTime?: string
   /** 公司信息 */
   companyProfile?: string
-  cardType?: string
 }
 
-/** 弹窗类型 */
-export type IModalType = 'insertUser' | 'updateUser'
+/** 弹窗类型 insertUser新增 updateUser修改 viewUser查看 */
+export type IModalType = 'insertUser' | 'updateUser' | 'viewUser'
 
 export interface IState {
+  /** 表格loading */
   loading: boolean
+  /** 表格数据 */
   pageData: PageDataDefine<IDataItem>
+  /** 已选择的表格行key */
   selectedRowKeys: ColumnKey[]
+  /** 搜索form */
   searchForm: Pick<IDataItem, 'fullName' | 'phoneNumber'>
+  /** 弹窗visible */
   modalVisible: boolean
+  /** 弹窗form */
   modalForm: IDataItem
   /** 弹窗类型 */
   modalType: IModalType
