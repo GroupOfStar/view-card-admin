@@ -261,6 +261,14 @@ export default defineComponent(function Main() {
         <Layout.Content class={styles.content_warpper}>
           <RouterView class={styles.content}></RouterView>
         </Layout.Content>
+
+        <Layout.Footer class={styles.footer_warpper}>
+          <div class={styles.left_dsc}>
+            &copy; 2001-2021 版权所有 软通动力信息技术（集团）股份有限公司
+            系统适用于Chrome浏览器
+          </div>
+          <div class={styles.right_dsc}>法律声明 | 隐私政策</div>
+        </Layout.Footer>
       </Layout>
     </Layout>
   )
