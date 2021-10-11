@@ -21,13 +21,18 @@ const routes: Array<RouteRecordRaw> = [
       },
       {
         path: '/main/user',
-        name: 'vcUsers',
+        name: 'vcUser',
         component: () => import('../views/User'),
       },
       {
         path: '/main/temp',
         name: 'vcTemp',
         component: () => import('../views/Temp'),
+      },
+      {
+        path: '/main/news',
+        name: 'vcNews',
+        component: () => import('../views/News'),
       },
     ],
   },

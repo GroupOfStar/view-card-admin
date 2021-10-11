@@ -322,7 +322,7 @@ export default defineComponent(function Users() {
           <Col span={8}>
             <Form.Item>
               <Space>
-                <Button type="primary" onClick={getUserList}>
+                <Button type="primary" onClick={() => getUserList()}>
                   <SearchOutlined />
                   搜索
                 </Button>
