@@ -17,12 +17,12 @@ const routes: Array<RouteRecordRaw> = [
     children: [
       {
         path: '',
-        redirect: '/main/users',
+        redirect: '/main/user',
       },
       {
-        path: '/main/users',
+        path: '/main/user',
         name: 'vcUsers',
-        component: () => import('../views/Users'),
+        component: () => import('../views/User'),
       },
       {
         path: '/main/temp',

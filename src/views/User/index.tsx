@@ -24,8 +24,8 @@ import {
   ExclamationCircleOutlined,
 } from '@ant-design/icons-vue'
 import { useForm } from '@ant-design-vue/use'
-import { IDataItem, IState } from './interface'
-import { IDataItem as TemplateType } from '../Temp/interface'
+import { IUserItem, IState } from './interface'
+import { ITempItem } from '../Temp/interface'
 import moment from 'moment'
 import request, { baseURL } from '@/utils/request'
 
@@ -53,7 +53,7 @@ const Columns: ColumnProps = [
     width: 130,
     align: 'center',
     slots: { customRender: 'creationTime' },
-    sorter(record1: IDataItem, record2: IDataItem) {
+    sorter(record1: IUserItem, record2: IUserItem) {
       if (record1.creationTime && record2.creationTime)
         return moment(record1.creationTime).isBefore(record2.creationTime)
       else return true
@@ -144,7 +144,7 @@ export default defineComponent(function Users() {
     const url = '/framework-wechart/manager/queryUserList'
     const params = { ...state.searchForm, ...payload }
     request
-      .post<IResponseDefine<PageDataDefine<IDataItem>>>(url, params)
+      .post<IResponseDefine<PageDataDefine<IUserItem>>>(url, params)
       .then(res => {
         const { status, statusText, data } = res.data
         if (status === 0) {
@@ -182,7 +182,7 @@ export default defineComponent(function Users() {
   const getCompanyTemplateList = () => {
     if (state.companyTemplateList.length === 0) {
       const url = '/framework-wechart/manager/selectTemplate'
-      request.post<IResponseDefine<TemplateType[]>>(url).then(res => {
+      request.post<IResponseDefine<ITempItem[]>>(url).then(res => {
         const { status, statusText, data } = res.data
         if (status === 0) {
           state.companyTemplateList = data
@@ -194,7 +194,7 @@ export default defineComponent(function Users() {
   }
 
   // 查看
-  const handleView = (record: IDataItem) => {
+  const handleView = (record: IUserItem) => {
     getCompanyTemplateList()
     state.modalForm.uniqueId = record.uniqueId
     state.modalForm.fullName = record.fullName
@@ -219,7 +219,7 @@ export default defineComponent(function Users() {
   }
 
   // 编辑
-  const handleUpdate = (record: IDataItem) => {
+  const handleUpdate = (record: IUserItem) => {
     getCompanyTemplateList()
     state.modalForm.uniqueId = record.uniqueId
     state.modalForm.fullName = record.fullName
@@ -240,7 +240,7 @@ export default defineComponent(function Users() {
   const fetchBatchDeleteUser = (ids: ColumnKey[]) => {
     const url = '/framework-wechart/manager/batchDeleteUser'
     const params = { uniqueIds: ids }
-    request.post<IResponseDefine<TemplateType[]>>(url, params).then(res => {
+    request.post<IResponseDefine>(url, params).then(res => {
       const { status, statusText } = res.data
       if (status === 0) {
         message.success('删除用户成功！')
@@ -271,7 +271,7 @@ export default defineComponent(function Users() {
   const hanldeOK = () => {
     validate().then(fields => {
       const url = `/framework-wechart/manager/${state.modalType}`
-      request.post<IResponseDefine<TemplateType[]>>(url, fields).then(res => {
+      request.post<IResponseDefine>(url, fields).then(res => {
         const { status, statusText } = res.data
         if (status === 0) {
           message.success(
@@ -404,17 +404,17 @@ export default defineComponent(function Users() {
       >
         {{
           // 姓名
-          fullName: ({ record }: { record: IDataItem }) => (
+          fullName: ({ record }: { record: IUserItem }) => (
             <a onClick={() => handleView(record)}>{record.fullName}</a>
           ),
           // 修改时间
-          modifyTime: ({ text }: { text: IDataItem['modifyTime'] }) =>
+          modifyTime: ({ text }: { text: IUserItem['modifyTime'] }) =>
             text && moment(text).format('YYYY-MM-DD HH:mm'),
           // 创建时间
-          creationTime: ({ text }: { text: IDataItem['creationTime'] }) =>
+          creationTime: ({ text }: { text: IUserItem['creationTime'] }) =>
             text && moment(text).format('YYYY-MM-DD HH:mm'),
           // 操作
-          operation: ({ record }: { record: IDataItem }) => (
+          operation: ({ record }: { record: IUserItem }) => (
             <>
               <a onClick={() => handleUpdate(record)}>编辑</a>
               <Divider type="vertical" />

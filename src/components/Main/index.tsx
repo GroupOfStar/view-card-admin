@@ -12,7 +12,7 @@ import {
 } from 'ant-design-vue'
 import { useForm } from '@ant-design-vue/use'
 import {
-  UserOutlined,
+  TeamOutlined,
   LogoutOutlined,
   FormOutlined,
   MenuUnfoldOutlined,
@@ -157,8 +157,8 @@ export default defineComponent(function Main() {
           mode="inline"
           onClick={onMenuChange}
         >
-          <Menu.Item key="users">
-            <UserOutlined />
+          <Menu.Item key="user">
+            <TeamOutlined />
             <span>员工信息</span>
           </Menu.Item>
           <Menu.Item key="temp">
@@ -197,7 +197,7 @@ export default defineComponent(function Main() {
                     <Avatar
                       size="small"
                       class={styles.right_header_avatar}
-                      icon={<UserOutlined />}
+                      icon={<TeamOutlined />}
                     />
                     <span>{store.state.userInfo.name}</span>
                   </span>

@@ -1,7 +1,7 @@
-import { IDataItem as TemplateType } from '../Temp/interface'
+import { ITempItem } from '../Temp/interface'
 
 /** 表格行数据 */
-export interface IDataItem {
+export interface IUserItem {
   /** 用户ID */
   id?: string
   /** 用户id(标识当前应用的用户id) */
@@ -41,17 +41,17 @@ export interface IState {
   /** 表格loading */
   loading: boolean
   /** 表格数据 */
-  pageData: PageDataDefine<IDataItem>
+  pageData: PageDataDefine<IUserItem>
   /** 已选择的表格行key */
   selectedRowKeys: ColumnKey[]
   /** 搜索form */
-  searchForm: Pick<IDataItem, 'fullName' | 'phoneNumber'>
+  searchForm: Pick<IUserItem, 'fullName' | 'phoneNumber'>
   /** 弹窗visible */
   modalVisible: boolean
   /** 弹窗form */
-  modalForm: IDataItem
+  modalForm: IUserItem
   /** 弹窗类型 */
   modalType: IModalType
   /** 公司模板 */
-  companyTemplateList: TemplateType[]
+  companyTemplateList: ITempItem[]
 }

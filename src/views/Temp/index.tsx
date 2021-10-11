@@ -19,7 +19,7 @@ import {
 } from 'ant-design-vue'
 import { PlusOutlined, DownOutlined } from '@ant-design/icons-vue'
 import { useForm } from '@ant-design-vue/use'
-import { ICompanyTempItem, IDataItem, IState } from './interface'
+import { ICompanyTempItem, ITempItem, IState } from './interface'
 import { uniqueId } from 'lodash-es'
 import moment from 'moment'
 import request from '@/utils/request'
@@ -94,7 +94,7 @@ export default defineComponent(function Temp() {
     const url = '/framework-wechart/companyTemplate/queryPage'
     state.loading = true
     request
-      .post<IResponseDefine<PageDataDefine<IDataItem>>>(url, payload)
+      .post<IResponseDefine<PageDataDefine<ITempItem>>>(url, payload)
       .then(res => {
         const { status, statusText, data } = res.data
         if (status === 0) {
@@ -116,7 +116,7 @@ export default defineComponent(function Temp() {
   }
 
   // 编辑
-  const handleUpdate = (record: IDataItem) => {
+  const handleUpdate = (record: ITempItem) => {
     state.modalForm.id = record.id
     state.modalForm.creationBy = record.creationBy
     state.modalForm.templateAlias = record.templateAlias
@@ -141,7 +141,7 @@ export default defineComponent(function Temp() {
   }
 
   // 设置默认模板
-  const handleDefaultTemp = (record: IDataItem) => {
+  const handleDefaultTemp = (record: ITempItem) => {
     const url = '/framework-wechart/companyTemplate/setDefault'
     const params = {
       id: record.id,
@@ -250,7 +250,7 @@ export default defineComponent(function Temp() {
           dateForamt: ({ text }: { text?: string }) =>
             text && moment(text).format('YYYY-MM-DD HH:mm'),
           // 是否为默认模板
-          isDefault: ({ record }: { record: IDataItem }) => {
+          isDefault: ({ record }: { record: ITempItem }) => {
             const isDefault = ref(record.isDefault === '是')
             return (
               <Switch
@@ -262,7 +262,7 @@ export default defineComponent(function Temp() {
             )
           },
           // 操作
-          operation: ({ record }: { record: IDataItem }) => (
+          operation: ({ record }: { record: ITempItem }) => (
             <>
               <a onClick={() => handleUpdate(record)}>编辑</a>
               <Divider type="vertical" />

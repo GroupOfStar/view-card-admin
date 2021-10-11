@@ -1,5 +1,5 @@
 /** 公司模板item */
-export interface IDataItem {
+export interface ITempItem {
   /** id */
   id?: number
   /** 租户id */
@@ -38,11 +38,11 @@ export interface IState {
   /** 表格loading */
   loading: boolean
   /** 表格数据 */
-  pageData: PageDataDefine<IDataItem>
+  pageData: PageDataDefine<ITempItem>
   /** 弹窗visible */
   modalVisible: boolean
   /** 弹窗form */
-  modalForm: IDataItem
+  modalForm: ITempItem
   /** 弹窗类型 */
   modalType: IModalType
 }
