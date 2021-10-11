@@ -45,7 +45,7 @@ export interface IState {
   /** 已选择的表格行key */
   selectedRowKeys: ColumnKey[]
   /** 搜索form */
-  searchForm: Pick<IUserItem, 'fullName' | 'phoneNumber'>
+  searchForm: Partial<Pick<IUserItem, 'fullName' | 'phoneNumber'>>
   /** 弹窗visible */
   modalVisible: boolean
   /** 弹窗form */

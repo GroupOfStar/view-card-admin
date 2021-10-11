@@ -33,7 +33,7 @@ const resourceTypeEnum: IStatusEnum<IResourceType>[] = [
   { title: '解决方案', value: '02' },
 ]
 
-/** 表管理列 */
+/** 表格列配置 */
 const Columns: ColumnProps = [
   {
     title: '标题名称',

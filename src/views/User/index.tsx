@@ -29,7 +29,7 @@ import { ITempItem } from '../Temp/interface'
 import moment from 'moment'
 import request, { baseURL } from '@/utils/request'
 
-/** 表管理列 */
+/** 表格列配置 */
 const Columns: ColumnProps = [
   {
     title: '姓名',
@@ -79,8 +79,8 @@ export default defineComponent(function Users() {
     },
     selectedRowKeys: [],
     searchForm: {
-      fullName: '',
-      phoneNumber: '',
+      fullName: undefined,
+      phoneNumber: undefined,
     },
     modalVisible: false,
     modalForm: {
@@ -143,6 +143,7 @@ export default defineComponent(function Users() {
   ) => {
     const url = '/framework-wechart/manager/queryUserList'
     const params = { ...state.searchForm, ...payload }
+    state.loading = true
     request
       .post<IResponseDefine<PageDataDefine<IUserItem>>>(url, params)
       .then(res => {
@@ -303,7 +304,7 @@ export default defineComponent(function Users() {
                 v-model={[state.searchForm.fullName, 'value', ['trim']]}
                 allowClear
                 placeholder="请输入"
-                onPressEnter={getUserList}
+                onPressEnter={() => getUserList()}
               />
             </Form.Item>
           </Col>
@@ -314,7 +315,7 @@ export default defineComponent(function Users() {
                 v-model={[state.searchForm.phoneNumber, 'value', ['trim']]}
                 allowClear
                 placeholder="请输入"
-                onPressEnter={getUserList}
+                onPressEnter={() => getUserList()}
               />
             </Form.Item>
           </Col>

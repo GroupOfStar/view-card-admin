@@ -21,18 +21,23 @@ const routes: Array<RouteRecordRaw> = [
       },
       {
         path: '/main/user',
-        name: 'vcUser',
+        name: 'vcUser', // 员工信息
         component: () => import('../views/User'),
       },
       {
         path: '/main/temp',
-        name: 'vcTemp',
+        name: 'vcTemp', // 模板管理
         component: () => import('../views/Temp'),
       },
       {
         path: '/main/news',
-        name: 'vcNews',
+        name: 'vcNews', // 信息管理
         component: () => import('../views/News'),
+      },
+      {
+        path: '/main/auth',
+        name: 'vcAuth', // 权限管理
+        component: () => import('../views/Auth'),
       },
     ],
   },
