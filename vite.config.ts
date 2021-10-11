@@ -12,8 +12,6 @@ export default defineConfig({
       output: {
         manualChunks: {
           'lodash-es': ['lodash-es'],
-          '@antv/g2plot': ['@antv/g2plot'],
-          '@opd/g2plot-vue': ['@opd/g2plot-vue'],
           'ant-design-vue': ['ant-design-vue'],
           moment: ['moment'],
         },
