@@ -1,15 +1,4 @@
-/** 公司模板item */
-export interface TemplateType {
-  id: number
-  /** 模板名称 */
-  templateAlias: string
-  /** 租户id */
-  tenantId?: string
-  /** 模板内容 */
-  companyProfile?: string
-  /** 是否为默认模板 */
-  isDefault?: '是' | '否'
-}
+import { IDataItem as TemplateType } from '../Temp/interface'
 
 /** 表格行数据 */
 export interface IDataItem {
@@ -43,35 +32,6 @@ export interface IDataItem {
   creationTime?: string
   /** 修改时间 */
   modifyTime?: string
-}
-
-export interface baseUserType {
-  /** 用户ID */
-  id?: string
-  /** 用户id(标识当前应用的用户id) */
-  uniqueId?: string
-  /** appId（应用） */
-  appId?: string
-  /** 类型（数据来源） */
-  type?: '1'
-  /** 公司模板ID */
-  companyTemplateId?: number
-  /** 名片样式 */
-  cardFormat?: string
-  /** 名片背景 */
-  cardBackdrop?: string
-  /** 字体颜色 */
-  fontColor?: string
-  /** 用户权限 */
-  userRight?: string
-  /** 用户头像路径 */
-  profileUrl?: string
-  /** 传间时间 */
-  creationTime?: string
-  /** 修改时间 */
-  modifyTime?: string
-  /** 公司信息 */
-  companyProfile?: string
 }
 
 /** 弹窗类型 insertUser新增 updateUser修改 viewUser查看 */

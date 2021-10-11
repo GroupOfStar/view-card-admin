@@ -149,7 +149,7 @@ export default defineComponent(function Main() {
       >
         <div class={styles.logo_warpper} onClick={() => router.push('/main/')}>
           <img class={styles.logo_img} src={Logo} />
-          <div class={styles.logo_title}>后台管理</div>
+          <div class={styles.logo_title}>云名片后台</div>
         </div>
         <Menu
           v-model={[state.currentMenu, 'selectedKeys']}
@@ -161,16 +161,15 @@ export default defineComponent(function Main() {
             <UserOutlined />
             <span>员工信息</span>
           </Menu.Item>
-
-          <Menu.Item key="TemplateManage">
+          <Menu.Item key="temp">
             <MobileOutlined />
             <span>模板管理</span>
           </Menu.Item>
-          <Menu.Item key="News">
+          <Menu.Item key="news">
             <NotificationOutlined />
             <span>信息管理</span>
           </Menu.Item>
-          <Menu.Item key="AuthorityManage">
+          <Menu.Item key="auth">
             <UnlockOutlined />
             <span>权限管理</span>
           </Menu.Item>

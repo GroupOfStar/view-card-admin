@@ -24,7 +24,8 @@ import {
   ExclamationCircleOutlined,
 } from '@ant-design/icons-vue'
 import { useForm } from '@ant-design-vue/use'
-import { IDataItem, TemplateType, IState } from './interface'
+import { IDataItem, IState } from './interface'
+import { IDataItem as TemplateType } from '../Temp/interface'
 import moment from 'moment'
 import request, { baseURL } from '@/utils/request'
 
@@ -66,6 +67,7 @@ const Columns: ColumnProps = [
   },
 ]
 
+/** 用户管理 */
 export default defineComponent(function Users() {
   const state = reactive<IState>({
     loading: false,

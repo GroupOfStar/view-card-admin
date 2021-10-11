@@ -24,6 +24,11 @@ const routes: Array<RouteRecordRaw> = [
         name: 'vcUsers',
         component: () => import('../views/Users'),
       },
+      {
+        path: '/main/temp',
+        name: 'vcTemp',
+        component: () => import('../views/Temp'),
+      },
     ],
   },
 ]
