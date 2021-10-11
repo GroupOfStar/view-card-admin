@@ -1,13 +1,4 @@
-import {
-  defineComponent,
-  reactive,
-  ref,
-  computed,
-  Ref,
-  UnwrapRef,
-  ComputedRef,
-  nextTick,
-} from 'vue'
+import { defineComponent, reactive, ref, computed, nextTick } from 'vue'
 import {
   Button,
   Table,
@@ -20,10 +11,8 @@ import {
   Col,
   Form,
   Input,
-  Select,
   Checkbox,
   Typography,
-  Space,
   Dropdown,
   Menu,
   message,
@@ -34,7 +23,6 @@ import { ICompanyTempItem, IDataItem, IState } from './interface'
 import { uniqueId } from 'lodash-es'
 import moment from 'moment'
 import request from '@/utils/request'
-import styles from './index.module.less'
 
 /** 表格列配置 */
 const Columns: ColumnProps = [
@@ -75,8 +63,6 @@ export default defineComponent(function Temp() {
     modalVisible: false,
     modalType: 'save',
   })
-
-  // const companyProfile = ref(state.modalForm.companyProfile)
 
   /** 弹窗内动态的模块信息 */
   const companyTemp = computed({
@@ -313,8 +299,12 @@ export default defineComponent(function Temp() {
                 </Form.Item>
               </Col>
               <Col span="12">
-                <Form.Item label="附加项" name="extraContent">
-                  <Checkbox.Group>
+                <Form.Item
+                  label="附加项"
+                  name="extraContent"
+                  extra="暂无接口提供！"
+                >
+                  <Checkbox.Group disabled>
                     <Checkbox value="A">新闻动态</Checkbox>
                     <Checkbox value="B">解决方案</Checkbox>
                   </Checkbox.Group>
@@ -367,8 +357,8 @@ export default defineComponent(function Temp() {
                 marginBottom: thisTemps.length - 1 === index ? '0px' : '8px',
               }}
             >
-              <Form layout="vertical" class={styles.plate_form}>
-                <Form.Item label="标题">
+              <Form layout="vertical">
+                <Form.Item label="标题" required>
                   <Input
                     v-model={[item.label, 'value']}
                     placeholder="请输入..."
