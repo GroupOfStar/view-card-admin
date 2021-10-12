@@ -133,7 +133,10 @@ export default defineComponent(function Temp() {
       const { status, statusText } = res.data
       if (status === 0) {
         message.success('删除用户成功！')
-        getTemplateList()
+        getTemplateList({
+          page: state.pageData.currPage,
+          limit: state.pageData.pageSize,
+        })
       } else {
         message.error(statusText)
       }
@@ -154,7 +157,10 @@ export default defineComponent(function Temp() {
         const { status, statusText } = res.data
         if (status === 0) {
           message.success('设置成功！')
-          getTemplateList()
+          getTemplateList({
+            page: state.pageData.currPage,
+            limit: state.pageData.pageSize,
+          })
         } else {
           message.error(statusText)
         }
@@ -206,7 +212,10 @@ export default defineComponent(function Temp() {
                 `${state.modalType === 'save' ? '新增' : '修改'}成功！`
               )
               hanldeCancel()
-              getTemplateList()
+              getTemplateList({
+                page: state.pageData.currPage,
+                limit: state.pageData.pageSize,
+              })
             } else {
               message.error(statusText)
             }

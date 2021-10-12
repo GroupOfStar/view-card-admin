@@ -181,7 +181,10 @@ export default defineComponent(function Users() {
         if (status === 0) {
           message.success('新增成功！')
           state.modalVisible = false
-          getAuthList()
+          getAuthList({
+            page: state.pageData.currPage,
+            limit: state.pageData.pageSize,
+          })
         } else {
           message.error(statusText)
         }

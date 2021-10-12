@@ -191,7 +191,10 @@ export default defineComponent(function Users() {
         const { status, statusText } = res.data
         if (status === 0) {
           message.success('删除用户成功！')
-          hanldeResetSearch()
+          getUserList({
+            page: state.pageData.currPage,
+            limit: state.pageData.pageSize,
+          })
         } else {
           message.error(statusText)
         }
@@ -214,7 +217,10 @@ export default defineComponent(function Users() {
           message.success(
             `${state.modalType === 'insert' ? '新增' : '修改'}员工信息成功！`
           )
-          hanldeResetSearch()
+          getUserList({
+            page: state.pageData.currPage,
+            limit: state.pageData.pageSize,
+          })
           hanldeCancel()
         } else {
           message.error(statusText)

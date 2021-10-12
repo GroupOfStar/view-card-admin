@@ -173,7 +173,7 @@ export default defineComponent(function Users() {
     }
     if (file.status === 'done') {
       message.success('导入成功！')
-      getUserList()
+      hanldeResetSearch()
     } else if (file.status === 'error') {
       message.error('导入失败！')
     }
@@ -245,7 +245,10 @@ export default defineComponent(function Users() {
       const { status, statusText } = res.data
       if (status === 0) {
         message.success('删除用户成功！')
-        hanldeResetSearch()
+        getUserList({
+          page: state.pageData.currPage,
+          limit: state.pageData.pageSize,
+        })
       } else {
         message.error(statusText)
       }
@@ -280,7 +283,10 @@ export default defineComponent(function Users() {
               state.modalType === 'insertUser' ? '新增' : '修改'
             }员工信息成功！`
           )
-          hanldeResetSearch()
+          getUserList({
+            page: state.pageData.currPage,
+            limit: state.pageData.pageSize,
+          })
           hanldeCancel()
         } else {
           message.error(statusText)
