@@ -22,4 +22,6 @@ npm config set registry https://registry.npm.taobao.org/
 ```sh
 # 安装全部依赖，失败的话常识删除pnpm-lock.yaml
 npm install
+# 使用线上的接口字段运行项目， 本地使用npm run dev
+npm run pro
 ```

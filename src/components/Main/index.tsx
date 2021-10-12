@@ -96,7 +96,7 @@ export default defineComponent(function Main() {
   /** 修改密码 */
   const onConfirmPass = () => {
     validate().then((feilds: any) => {
-      const url = '/manager/updatePassword'
+      const url = '/framework-wechart/manager/updatePassword'
       state.pwLoading = true
       request
         .post(url, feilds)
