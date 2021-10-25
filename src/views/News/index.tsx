@@ -1,4 +1,4 @@
-import { defineComponent, reactive } from 'vue'
+import { computed, defineComponent, reactive } from 'vue'
 import {
   Space,
   Button,
@@ -92,6 +92,18 @@ export default defineComponent(function Users() {
       reorder: 1,
     },
     modalType: 'view',
+  })
+
+  // 弹窗标题
+  const modalTitle = computed(() => {
+    switch (state.modalType) {
+      case 'insert':
+        return '新增'
+      case 'update':
+        return '修改'
+      case 'view':
+        return '查看'
+    }
   })
 
   const {
@@ -214,9 +226,7 @@ export default defineComponent(function Users() {
       request.post<IResponseDefine>(url, fields).then(res => {
         const { status, statusText } = res.data
         if (status === 0) {
-          message.success(
-            `${state.modalType === 'insert' ? '新增' : '修改'}员工信息成功！`
-          )
+          message.success(`${modalTitle.value}员工信息成功！`)
           getUserList({
             page: state.pageData.currPage,
             limit: state.pageData.pageSize,
@@ -335,7 +345,7 @@ export default defineComponent(function Users() {
 
       <Modal
         v-model={[state.modalVisible, 'visible']}
-        title={state.modalType === 'insert' ? '新增' : '修改'}
+        title={modalTitle.value}
         onCancel={hanldeCancel}
         footer={
           state.modalType === 'view' ? (
@@ -392,7 +402,11 @@ export default defineComponent(function Users() {
               style={{ width: '100%' }}
             />
           </Form.Item>
-          <Form.Item label="排序权重" {...validateInfos.reorder}>
+          <Form.Item
+            label="排序权重"
+            {...validateInfos.reorder}
+            extra="权重值越大展示时越靠前"
+          >
             <InputNumber
               v-model={[state.modalForm.reorder, 'value', ['trim']]}
               disabled={state.modalType === 'view'}

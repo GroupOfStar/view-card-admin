@@ -20,6 +20,7 @@ import {
   MobileOutlined,
   NotificationOutlined,
   UnlockOutlined,
+  UserOutlined,
 } from '@ant-design/icons-vue'
 import Logo from '@/assets/logo.png'
 import { useStore } from '@/store'
@@ -197,7 +198,7 @@ export default defineComponent(function Main() {
                     <Avatar
                       size="small"
                       class={styles.right_header_avatar}
-                      icon={<TeamOutlined />}
+                      icon={<UserOutlined />}
                     />
                     <span>{store.state.userInfo.name}</span>
                   </span>

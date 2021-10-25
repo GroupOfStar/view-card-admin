@@ -1,4 +1,4 @@
-import { defineComponent, reactive, createVNode } from 'vue'
+import { defineComponent, reactive, createVNode, computed } from 'vue'
 import {
   Space,
   Button,
@@ -97,6 +97,18 @@ export default defineComponent(function Users() {
     },
     modalType: 'insertUser',
     companyTemplateList: [],
+  })
+
+  // 弹窗标题
+  const modalTitle = computed(() => {
+    switch (state.modalType) {
+      case 'insertUser':
+        return '新增'
+      case 'updateUser':
+        return '修改'
+      case 'viewUser':
+        return '查看'
+    }
   })
 
   const {
@@ -278,11 +290,7 @@ export default defineComponent(function Users() {
       request.post<IResponseDefine>(url, fields).then(res => {
         const { status, statusText } = res.data
         if (status === 0) {
-          message.success(
-            `${
-              state.modalType === 'insertUser' ? '新增' : '修改'
-            }员工信息成功！`
-          )
+          message.success(`${modalTitle.value}员工信息成功！`)
           getUserList({
             page: state.pageData.currPage,
             limit: state.pageData.pageSize,
@@ -440,7 +448,7 @@ export default defineComponent(function Users() {
 
       <Modal
         v-model={[state.modalVisible, 'visible']}
-        title={`${state.modalType === 'insertUser' ? '新增' : '修改'}员工信息`}
+        title={modalTitle.value}
         onCancel={hanldeCancel}
         footer={
           state.modalType === 'viewUser' ? (
