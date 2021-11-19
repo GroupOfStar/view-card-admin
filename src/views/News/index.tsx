@@ -44,26 +44,33 @@ const Columns: ColumnProps = [
   {
     title: '标题名称',
     dataIndex: 'titleName',
+    width: 250,
     slots: { customRender: 'titleName' },
   },
   {
     title: '资源类型',
     dataIndex: 'resourceType',
+    width: 90,
     slots: { customRender: 'resourceType' },
   },
-  { title: '分类', dataIndex: 'secondaryCategory' },
+  { title: '分类', width: 90, dataIndex: 'secondaryCategory' },
   {
     title: '新闻链接',
     dataIndex: 'resourceUrl',
-    slots: { customRender: 'resourceUrl' },
   },
-  { title: '租户', dataIndex: 'tenantName' },
+  { title: '租户', dataIndex: 'tenantName', width: 185, ellipsis: true },
   {
     title: '获取时间',
     dataIndex: 'getTime',
+    width: 130,
     slots: { customRender: 'getTime' },
   },
-  { title: '操作', align: 'center', slots: { customRender: 'operation' } },
+  {
+    title: '操作',
+    width: 110,
+    align: 'center',
+    slots: { customRender: 'operation' },
+  },
 ]
 
 /** 用户管理 */
@@ -305,7 +312,6 @@ export default defineComponent(function Users() {
         rowKey="id"
         loading={state.loading}
         columns={Columns}
-        scroll={{ x: true }}
         dataSource={state.pageData.list}
         pagination={{
           current: state.pageData.currPage,
