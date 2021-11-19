@@ -5,7 +5,7 @@
   "author": "chenqunxing",
   "license": "ISC",
   "scripts": {
-    "dev": "vite",
+    "dev": "vite --mode dev --host",
     "pro": "vite --mode pro --host",
     "build": "vuedx-typecheck . && vite build  --mode pro",
     "serve": "vite preview --host"

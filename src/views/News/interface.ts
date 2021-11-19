@@ -1,6 +1,14 @@
 /** 资源类型 */
 export type IResourceType = '01' | '02'
 
+/** 分类标签 */
+export interface ICategoryTagItem {
+  /** 分类id */
+  secondaryCategoryId: string
+  /** 分类 */
+  secondaryCategory?: string
+}
+
 /** 表格行数据 */
 export interface INewsItem {
   /** 用户ID */
@@ -9,6 +17,10 @@ export interface INewsItem {
   titleName?: string
   /** 资源类型 */
   resourceType?: IResourceType
+  /** 分类id */
+  secondaryCategoryId?: ICategoryTagItem['secondaryCategoryId']
+  /** 分类 */
+  secondaryCategory?: ICategoryTagItem['secondaryCategory']
   /** 新闻链接 */
   resourceUrl?: string
   /** 图片链接 */
@@ -33,6 +45,8 @@ export interface IState {
   loading: boolean
   /** 表格数据 */
   pageData: PageDataDefine<INewsItem>
+  /** 分类标签 */
+  categoryTags: ICategoryTagItem[]
   /** 搜索form */
   searchForm: Pick<INewsItem, 'resourceType' | 'titleName'>
   /** 弹窗visible */

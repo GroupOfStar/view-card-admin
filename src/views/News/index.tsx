@@ -22,7 +22,13 @@ import {
   UndoOutlined,
 } from '@ant-design/icons-vue'
 import { useForm } from '@ant-design-vue/use'
-import { IResourceType, INewsItem, IState } from './interface'
+import {
+  IResourceType,
+  INewsItem,
+  IState,
+  ICategoryTagItem,
+  IModalType,
+} from './interface'
 import moment from 'moment'
 import request from '@/utils/request'
 import { getLookupNameByKey } from '@/utils/utils'
@@ -38,33 +44,26 @@ const Columns: ColumnProps = [
   {
     title: '标题名称',
     dataIndex: 'titleName',
-    width: 250,
     slots: { customRender: 'titleName' },
   },
   {
     title: '资源类型',
     dataIndex: 'resourceType',
-    width: 90,
     slots: { customRender: 'resourceType' },
   },
+  { title: '分类', dataIndex: 'secondaryCategory' },
   {
     title: '新闻链接',
     dataIndex: 'resourceUrl',
     slots: { customRender: 'resourceUrl' },
   },
-  { title: '租户', dataIndex: 'tenantName', width: 185, ellipsis: true },
+  { title: '租户', dataIndex: 'tenantName' },
   {
     title: '获取时间',
     dataIndex: 'getTime',
-    width: 130,
     slots: { customRender: 'getTime' },
   },
-  {
-    title: '操作',
-    width: 110,
-    align: 'center',
-    slots: { customRender: 'operation' },
-  },
+  { title: '操作', align: 'center', slots: { customRender: 'operation' } },
 ]
 
 /** 用户管理 */
@@ -77,6 +76,7 @@ export default defineComponent(function Users() {
       totalCount: 0,
       list: [],
     },
+    categoryTags: [],
     searchForm: {
       titleName: undefined,
       resourceType: undefined,
@@ -86,6 +86,7 @@ export default defineComponent(function Users() {
       id: undefined,
       titleName: '',
       resourceType: undefined,
+      secondaryCategoryId: undefined,
       resourceUrl: '',
       summaryUrl: '',
       getTime: undefined,
@@ -121,6 +122,7 @@ export default defineComponent(function Users() {
     id: [{ required: false, type: 'string' }],
     titleName: [{ required: true, message: '不能为空！' }],
     resourceType: [{ required: true, message: '不能为空！' }],
+    secondaryCategoryId: [{ required: false, type: 'string' }],
     resourceUrl: [{ required: true, message: '不能为空！' }],
     summaryUrl: [{ required: false, type: 'string' }],
     getTime: [{ required: false, type: 'string' }],
@@ -154,6 +156,20 @@ export default defineComponent(function Users() {
   }
   getUserList()
 
+  // 分类标签数据
+  const getCategoryTags = () => {
+    const url = '/framework-wechart/resourceInfo/getSecondaryCategoryList'
+    request.post<IResponseDefine<ICategoryTagItem[]>>(url, {}).then(res => {
+      const { status, statusText, data } = res.data
+      if (status === 0) {
+        state.categoryTags = data
+      } else {
+        message.error(statusText)
+      }
+    })
+  }
+  getCategoryTags()
+
   // 重置搜索
   const hanldeResetSearch = () => {
     searchFormReset()
@@ -161,36 +177,23 @@ export default defineComponent(function Users() {
   }
 
   // 查看
-  const handleView = (record: INewsItem) => {
+  const handleAction = (record: INewsItem, type: IModalType) => {
     state.modalForm.id = record.id
     state.modalForm.titleName = record.titleName
     state.modalForm.resourceType = record.resourceType
+    state.modalForm.secondaryCategoryId = record.secondaryCategoryId
     state.modalForm.resourceUrl = record.resourceUrl
     state.modalForm.summaryUrl = record.summaryUrl
     state.modalForm.getTime = record.getTime
     state.modalForm.reorder = record.reorder
 
-    state.modalType = 'view'
+    state.modalType = type
     state.modalVisible = true
   }
 
   // 新增
   const handleAdd = () => {
     state.modalType = 'insert'
-    state.modalVisible = true
-  }
-
-  // 编辑
-  const handleUpdate = (record: INewsItem) => {
-    state.modalForm.id = record.id
-    state.modalForm.titleName = record.titleName
-    state.modalForm.resourceType = record.resourceType
-    state.modalForm.resourceUrl = record.resourceUrl
-    state.modalForm.summaryUrl = record.summaryUrl
-    state.modalForm.getTime = record.getTime
-    state.modalForm.reorder = record.reorder
-
-    state.modalType = 'update'
     state.modalVisible = true
   }
 
@@ -302,6 +305,7 @@ export default defineComponent(function Users() {
         rowKey="id"
         loading={state.loading}
         columns={Columns}
+        scroll={{ x: true }}
         dataSource={state.pageData.list}
         pagination={{
           current: state.pageData.currPage,
@@ -319,7 +323,9 @@ export default defineComponent(function Users() {
         {{
           // 标题名称
           titleName: ({ record }: { record: INewsItem }) => (
-            <a onClick={() => handleView(record)}>{record.titleName}</a>
+            <a onClick={() => handleAction(record, 'view')}>
+              {record.titleName}
+            </a>
           ),
           // 新闻类型
           resourceType: ({ text }: { text: INewsItem['resourceType'] }) =>
@@ -330,7 +336,7 @@ export default defineComponent(function Users() {
           // 操作
           operation: ({ record }: { record: INewsItem }) => (
             <>
-              <a onClick={() => handleUpdate(record)}>编辑</a>
+              <a onClick={() => handleAction(record, 'update')}>编辑</a>
               <Divider type="vertical" />
               <Popconfirm
                 title="是否确认删除？"
@@ -378,6 +384,19 @@ export default defineComponent(function Users() {
                 <Radio value={item.value}>{item.title}</Radio>
               ))}
             </Radio.Group>
+          </Form.Item>
+          <Form.Item label="分类" {...validateInfos.secondaryCategoryId}>
+            <Select
+              v-model={[state.modalForm.secondaryCategoryId, 'value']}
+              disabled={state.modalType === 'view'}
+              placeholder="请选择..."
+            >
+              {state.categoryTags.map(item => (
+                <Select.Option value={item.secondaryCategoryId}>
+                  {item.secondaryCategory}
+                </Select.Option>
+              ))}
+            </Select>
           </Form.Item>
           <Form.Item label="新闻链接" {...validateInfos.resourceUrl}>
             <Input
