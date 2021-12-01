@@ -6,9 +6,11 @@ export interface RootIState {
   /** 用户信息 */
   userInfo: {
     /** 登录ID（用户手机号）*/
-    loginId: string
+    loginId?: string
     /** 用户姓名 */
-    name: string
+    name?: string
+    /** 是否首次登录 (0-是 1-否) */
+    firstLoginFlag?: string
   }
 }
 

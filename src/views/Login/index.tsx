@@ -19,6 +19,8 @@ interface ILoginResponse {
   roleId?: string
   tenantId?: string
   tenantName?: string
+  /** 是否首次登录 ('0'是 '1'否) */
+  firstLoginFlag?: string
 }
 
 export default defineComponent({
@@ -39,9 +41,13 @@ export default defineComponent({
     // 登录
     const handleFinish = () => {
       const url = '/framework-wechart/manager/doLogin'
+      const params = {
+        loginId: state.loginForm.loginId,
+        password: btoa(state.loginForm.password),
+      }
       state.loading = true
       request
-        .post<ILoginResponse>(url, state.loginForm)
+        .post<ILoginResponse>(url, params)
         .then(res => {
           const {
             status,
@@ -49,9 +55,10 @@ export default defineComponent({
             Authorization = '',
             loginId = '',
             name = '',
+            firstLoginFlag,
           } = res.data
           if (status === 0) {
-            const payload = { loginId, name }
+            const payload = { loginId, name, firstLoginFlag }
             store.commit('CHANGE_USER_INFO', payload)
             localStorage.setItem('ACCESS_TOKEN', Authorization)
             localStorage.setItem('userInfo', JSON.stringify(payload))

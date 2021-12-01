@@ -1,4 +1,4 @@
-import { defineComponent, reactive, watch } from 'vue'
+import { defineComponent, reactive, watch, computed } from 'vue'
 import { RouterView, useRouter, useRoute } from 'vue-router'
 import {
   Menu,
@@ -8,6 +8,7 @@ import {
   Modal,
   Form,
   Input,
+  Alert,
   message,
 } from 'ant-design-vue'
 import { useForm } from '@ant-design-vue/use'
@@ -52,10 +53,12 @@ export default defineComponent(function Main() {
   const router = useRouter()
   const route = useRoute()
 
+  const firstLoginFlag = computed(() => store.state.userInfo.firstLoginFlag)
+
   const state = reactive<IState>({
     collapsed: false,
     currentMenu: [],
-    pwVisible: false,
+    pwVisible: firstLoginFlag.value === '0',
     pwLoading: false,
     pwForm: {
       oldPassword: '',
@@ -206,7 +209,7 @@ export default defineComponent(function Main() {
                 overlay: () => (
                   <Menu mode="horizontal">
                     <Menu.Item
-                      key="logout"
+                      key="updatePassword"
                       onClick={() => (state.pwVisible = true)}
                     >
                       <FormOutlined />
@@ -228,9 +231,31 @@ export default defineComponent(function Main() {
             title="修改密码"
             onOk={onConfirmPass}
             onCancel={onCancelPass}
+            cancelButtonProps={{ disabled: firstLoginFlag.value === '0' }}
+            maskClosable={false}
+            keyboard={false}
+            closable={firstLoginFlag.value !== '0'}
             confirmLoading={state.pwLoading}
           >
             <Form labelCol={{ span: 4 }} wrapperCol={{ span: 20 }}>
+              {firstLoginFlag.value === '0' && (
+                <Form.Item labelCol={{ span: 0 }} wrapperCol={{ span: 24 }}>
+                  <Alert
+                    message={
+                      <div
+                        style={{
+                          display: 'flex',
+                          justifyContent: 'space-between',
+                        }}
+                      >
+                        请先修改初始密码！
+                        <a onClick={() => router.push('/')}>返回首页</a>
+                      </div>
+                    }
+                    banner
+                  />
+                </Form.Item>
+              )}
               <Form.Item label="旧密码" {...validateInfos.oldPassword}>
                 <Input.Password
                   type="password"
