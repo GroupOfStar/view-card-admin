@@ -236,7 +236,7 @@ export default defineComponent(function Users() {
       request.post<IResponseDefine>(url, fields).then(res => {
         const { status, statusText } = res.data
         if (status === 0) {
-          message.success(`${modalTitle.value}员工信息成功！`)
+          message.success(`${modalTitle.value}成功！`)
           getUserList({
             page: state.pageData.currPage,
             limit: state.pageData.pageSize,
