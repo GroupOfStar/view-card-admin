@@ -40,7 +40,7 @@ const resourceTypeEnum: IStatusEnum<IResourceType>[] = [
 ]
 
 /** 表格列配置 */
-const Columns: ColumnProps = [
+const Columns: ColumnProps[] = [
   {
     title: '标题名称',
     dataIndex: 'titleName',

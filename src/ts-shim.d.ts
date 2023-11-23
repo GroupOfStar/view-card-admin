@@ -41,8 +41,7 @@ interface IStatusEnum<T = string> {
 }
 
 /** 表格列配置 */
-type ColumnProps = import('ant-design-vue/lib/table/interface').ColumnProps &
-  { children?: ColumnProps }[]
+type ColumnProps = import('ant-design-vue/lib/table/interface').ColumnProps
 
 /** 表格的key类型 */
 type ColumnKey = ColumnProps['key']

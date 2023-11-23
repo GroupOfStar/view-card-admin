@@ -30,7 +30,7 @@ import moment from 'moment'
 import request, { baseURL } from '@/utils/request'
 
 /** 表格列配置 */
-const Columns: ColumnProps = [
+const Columns: ColumnProps[] = [
   {
     title: '姓名',
     dataIndex: 'fullName',

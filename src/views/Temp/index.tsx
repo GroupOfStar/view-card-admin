@@ -25,7 +25,7 @@ import moment from 'moment'
 import request from '@/utils/request'
 
 /** 表格列配置 */
-const Columns: ColumnProps = [
+const Columns: ColumnProps[] = [
   { title: '模板名称', dataIndex: 'templateAlias' },
   {
     title: '修改时间',

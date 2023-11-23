@@ -30,7 +30,7 @@ const roleTypeEnum: IStatusEnum<IRoleType>[] = [
 ]
 
 /** 表格列配置 */
-const Columns: ColumnProps = [
+const Columns: ColumnProps[] = [
   { title: '姓名', dataIndex: 'name', width: 100 },
   { title: '手机号', dataIndex: 'loginId', width: 110 },
   { title: '租户', dataIndex: 'tenantName', ellipsis: true },
@@ -58,7 +58,7 @@ const Columns: ColumnProps = [
 ]
 
 /** 表格列配置 */
-const userColumns: ColumnProps = [
+const userColumns: ColumnProps[] = [
   { title: '姓名', dataIndex: 'fullName', ellipsis: true },
   { title: '手机号', dataIndex: 'phoneNumber', ellipsis: true },
   { title: '邮箱', dataIndex: 'email', ellipsis: true },
